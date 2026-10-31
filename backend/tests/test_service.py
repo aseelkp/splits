@@ -75,6 +75,13 @@ def test_session_with_sets_and_run(db):
     assert len(s.sets) == 2
 
 
+def test_created_at_always_has_a_timezone_offset(db):
+    # SQLite stores naive timestamps; strict JSON-schema clients reject date-times without an offset.
+    created_at = log(db).session.created_at
+    assert created_at.utcoffset() is not None
+    assert created_at.isoformat().endswith("+00:00")
+
+
 def test_date_defaults_to_today_in_configured_timezone(db):
     s = workouts.create_session(db, SessionIn(type="other")).session
     assert s.date == workouts.today()

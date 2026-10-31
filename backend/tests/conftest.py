@@ -1,3 +1,8 @@
+import os
+
+# Set before the app is imported: main.py reads these once at import time.
+os.environ["MCP_SECRET"] = "test-mcp-secret-0123456789"
+
 import pytest
 from sqlalchemy.orm import Session
 

@@ -116,9 +116,13 @@ def update_session(db: Session, session_id: int, data: SessionUpdate) -> Session
     return session_out(ws)
 
 
-def delete_session(db: Session, session_id: int) -> None:
-    db.delete(_get_session(db, session_id))
+def delete_session(db: Session, session_id: int) -> SessionOut:
+    """Delete a session with its sets and run. Returns what was deleted, so callers can confirm it."""
+    ws = _get_session(db, session_id)
+    deleted = session_out(ws)
+    db.delete(ws)
     db.commit()
+    return deleted
 
 
 def add_sets(db: Session, session_id: int, items: list[SetIn]) -> LogResult:
@@ -147,9 +151,13 @@ def update_set(db: Session, set_id: int, data: SetUpdate) -> SetOut:
     return set_out(s)
 
 
-def delete_set(db: Session, set_id: int) -> None:
-    db.delete(_get_set(db, set_id))
+def delete_set(db: Session, set_id: int) -> SetOut:
+    """Delete one set. Returns what was deleted, so callers can confirm it."""
+    s = _get_set(db, set_id)
+    deleted = set_out(s)
+    db.delete(s)
     db.commit()
+    return deleted
 
 
 def upsert_run(db: Session, session_id: int, data: RunIn) -> RunOut:
