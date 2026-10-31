@@ -3,14 +3,19 @@ from collections.abc import Iterator
 from sqlalchemy import create_engine, event
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
-from sqlalchemy.pool import NullPool
+from sqlalchemy.pool import NullPool, StaticPool
 
 from app.config import get_settings
 
 
 def make_engine(url: str) -> Engine:
     if url.startswith("sqlite"):
-        engine = create_engine(url)
+        if url in ("sqlite://", "sqlite:///:memory:"):
+            # An in-memory database vanishes when its connection closes, and web requests
+            # run on different threads. One shared connection keeps it alive for tests.
+            engine = create_engine(url, poolclass=StaticPool, connect_args={"check_same_thread": False})
+        else:
+            engine = create_engine(url)
 
         # SQLite ignores foreign keys unless asked; Postgres always enforces them.
         @event.listens_for(engine, "connect")

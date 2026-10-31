@@ -12,9 +12,14 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///./dev.db"
     timezone: str = "Asia/Kolkata"
 
-    # Used from step 3 onwards.
+    # Web login. Empty values mean login is disabled (the app fails closed).
     app_password: str = ""
     session_secret: str = ""
+    # The browser only sends a Secure cookie over https. localhost counts as secure in
+    # Chrome/Firefox; set COOKIE_SECURE=false only if you test over plain http elsewhere.
+    cookie_secure: bool = True
+
+    # Used from step 4 (MCP).
     mcp_secret: str = ""
 
     @property

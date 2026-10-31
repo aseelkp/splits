@@ -79,11 +79,14 @@ def delete_exercise(db: Session, exercise_id: int) -> None:
     db.commit()
 
 
-def get_exercise_history(db: Session, exercise: str, limit: int = 50) -> list[HistorySet]:
-    """Sets of one exercise, newest first (by session date, then within a session in set order)."""
-    found = find_exercise(db, exercise)
-    if not found:
-        raise NotFoundError(f'No exercise named "{exercise}". Use list_exercises to see exact names.')
+def get_exercise_history(db: Session, exercise: str | int, limit: int = 50) -> list[HistorySet]:
+    """Sets of one exercise (by name or id), newest first, then in set order within a session."""
+    if isinstance(exercise, int):
+        found = _get(db, exercise)
+    else:
+        found = find_exercise(db, exercise)
+        if not found:
+            raise NotFoundError(f'No exercise named "{exercise}". Use list_exercises to see exact names.')
     rows = db.execute(
         select(ExerciseSet, WorkoutSession.date)
         .join(WorkoutSession, ExerciseSet.session_id == WorkoutSession.id)
