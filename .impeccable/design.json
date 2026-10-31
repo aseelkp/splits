@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-31T00:00:00Z",
+  "title": "Design System: Splits",
+  "extensions": {
+    "colorMeta": {
+      "lime": { "role": "primary", "displayName": "Lime", "canonical": "#c6f135", "tonalRamp": ["#222d07", "#3e520d", "#5c7a12", "#7ea318", "#a1cb21", "#c6f135", "#dcf87e", "#effbc2"] },
+      "light-green": { "role": "primary", "displayName": "Field Green (light theme accent)", "canonical": "#2f7d1f", "tonalRamp": ["#0e2a09", "#1a4510", "#255f17", "#2f7d1f", "#47a034", "#72c15f", "#a5dc98", "#d6f0cf"] },
+      "ground": { "role": "neutral", "displayName": "Deep Barbell Green", "canonical": "#0f1a17", "tonalRamp": ["#070d0b", "#0f1a17", "#162620", "#1f332b", "#2a3d36", "#4a6358", "#6f8a7e", "#a9baaf"] },
+      "chalk": { "role": "neutral", "displayName": "Chalk", "canonical": "#eaf2ec", "tonalRamp": ["#4f6056", "#6f8a7e", "#a9baaf", "#c9d5cb", "#dbe6de", "#eaf2ec", "#f1f5ee", "#f8fbf9"] },
+      "plate-blue": { "role": "plate", "displayName": "Plate Blue", "canonical": "#6aa4ff", "tonalRamp": ["#14264d", "#1f3f80", "#2f5bb3", "#4a80e0", "#6aa4ff", "#93bdff", "#bcd5ff", "#e2edff"] },
+      "plate-green": { "role": "plate", "displayName": "Plate Green", "canonical": "#3ddc97", "tonalRamp": ["#0a3322", "#115238", "#1a7a53", "#27a972", "#3ddc97", "#76e8b6", "#a9f1d1", "#d8f9ea"] },
+      "plate-yellow": { "role": "plate", "displayName": "Plate Yellow", "canonical": "#ffd23f", "tonalRamp": ["#4d3b00", "#806100", "#b38900", "#e0b01a", "#ffd23f", "#ffe07a", "#ffeaa8", "#fff6d6"] },
+      "plate-red": { "role": "plate", "displayName": "Plate Red", "canonical": "#ff7a7a", "tonalRamp": ["#4d1414", "#802222", "#b33a3a", "#e05858", "#ff7a7a", "#ff9e9e", "#ffc2c2", "#ffe3e3"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display numerals", "purpose": "Live weight, rep count, timer, totals. Weight 800, tabular, negative tracking." },
+      "headline": { "displayName": "Headline", "purpose": "Home hero, summary head, wordmark, primary button label." },
+      "title": { "displayName": "Title", "purpose": "Exercise name and sheet headings." },
+      "body": { "displayName": "Body", "purpose": "Rows, inputs, pills." },
+      "label": { "displayName": "Label", "purpose": "Captions, units, field labels, muted." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "fade-quick", "value": "opacity 150ms ease-out", "purpose": "Primary button disabled and disc outline colour." },
+      { "name": "ring-fill", "value": "stroke-dashoffset 200ms ease-out", "purpose": "Rep ring progress." },
+      { "name": "plate-press", "value": "transform: scale(0.94)", "purpose": "Plate button :active." },
+      { "name": "reduced-motion", "value": "transitions and animations off", "purpose": "prefers-reduced-motion honoured globally." }
+    ],
+    "breakpoints": [
+      { "name": "app-max", "value": "27rem (single column, centred; no media breakpoints)" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Full-width lime pill with arrow disc; one per screen, in the thumb zone.",
+      "html": "<button class=\"ds-btn-primary\"><span>Start pull</span><span class=\"ds-arrow\">&rarr;</span></button>",
+      "css": ".ds-btn-primary{width:100%;min-height:4.25rem;padding:0 .75rem 0 1.75rem;display:flex;align-items:center;justify-content:space-between;background:var(--accent,#c6f135);color:var(--on-accent,#121b05);border:0;border-radius:999px;font-family:inherit;font-size:1.5rem;font-weight:800;letter-spacing:-.02em;cursor:pointer}.ds-btn-primary:focus-visible{outline:3px solid var(--accent,#c6f135);outline-offset:3px}.ds-btn-primary:disabled{opacity:.5}.ds-arrow{width:3rem;height:3rem;display:grid;place-items:center;border-radius:50%;background:var(--on-accent,#121b05);color:var(--accent,#c6f135)}"
+    },
+    {
+      "name": "Pill",
+      "kind": "chip",
+      "refersTo": "pill",
+      "description": "Outlined pill for filters and segments; inverts when selected.",
+      "html": "<button class=\"ds-pill\">Pull</button> <button class=\"ds-pill\" aria-pressed=\"true\">Push</button>",
+      "css": ".ds-pill{min-height:3rem;padding:0 1.125rem;display:inline-flex;align-items:center;background:transparent;color:var(--fg,#eaf2ec);border:2px solid var(--rule,#2a3d36);border-radius:999px;font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer}.ds-pill[aria-pressed='true']{background:var(--fg,#eaf2ec);color:var(--bg,#0f1a17);border-color:var(--fg,#eaf2ec);font-weight:700}.ds-pill:focus-visible{outline:3px solid var(--accent,#c6f135);outline-offset:3px}"
+    },
+    {
+      "name": "Number Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Transparent field with a 3:1 border and heavy tabular numerals.",
+      "html": "<label class=\"ds-label\">Distance<input class=\"ds-input\" value=\"5.2\"></label>",
+      "css": ".ds-label{display:block;font-size:.9375rem;font-weight:700;padding-bottom:.25rem}.ds-input{display:block;width:100%;height:3.5rem;padding:0 .875rem;background:transparent;color:var(--fg,#eaf2ec);border:2px solid var(--field,#6f8a7e);border-radius:1rem;font-family:inherit;font-size:1.625rem;font-weight:800;font-variant-numeric:tabular-nums}.ds-input:focus-visible{border-color:var(--fg,#eaf2ec);outline:3px solid var(--accent,#c6f135);outline-offset:2px}"
+    },
+    {
+      "name": "Set Chip",
+      "kind": "chip",
+      "refersTo": "pill",
+      "description": "Logged set; lime border for a PR, dashed for warm-up.",
+      "html": "<span class=\"ds-chip\">100 <small>kg</small></span> <span class=\"ds-chip ds-pr\">105 <small>kg</small></span> <span class=\"ds-chip ds-warm\">60 <small>kg</small></span>",
+      "css": ".ds-chip{min-height:3rem;padding:0 .875rem;display:inline-flex;align-items:center;gap:.25rem;border:2px solid var(--rule,#2a3d36);border-radius:999px;font-size:1rem;font-weight:700;font-variant-numeric:tabular-nums;color:var(--fg,#eaf2ec)}.ds-chip small{font-size:.875rem;font-weight:500;color:var(--muted,#a9baaf)}.ds-pr{border-color:var(--accent,#c6f135)}.ds-warm{border-style:dashed}"
+    },
+    {
+      "name": "Plate Button",
+      "kind": "custom",
+      "refersTo": "plate-button",
+      "description": "Round plate-coloured button with printed number; bigger plate, bigger button.",
+      "html": "<button class=\"ds-plate\" style=\"background:var(--plate-blue,#6aa4ff);width:66px;height:66px\">20</button> <button class=\"ds-plate\" style=\"background:var(--plate-green,#3ddc97);width:62px;height:62px\">10</button> <button class=\"ds-plate\" style=\"background:var(--plate-yellow,#ffd23f);width:58px;height:58px\">5</button>",
+      "css": ".ds-plate{display:grid;place-items:center;padding:0;color:var(--ink,#0b1210);border:3px solid var(--edge,#0f1a17);border-radius:50%;font-family:inherit;font-size:1.125rem;font-weight:800;font-variant-numeric:tabular-nums;cursor:pointer}.ds-plate:active{transform:scale(.94)}.ds-plate:focus-visible{outline:3px solid var(--accent,#c6f135);outline-offset:3px}"
+    },
+    {
+      "name": "Rep Ring",
+      "kind": "custom",
+      "refersTo": "rep-ring",
+      "description": "Tap-per-rep counter; lime arc fills toward last time's reps.",
+      "html": "<div class=\"ds-ring\"><svg width=\"156\" height=\"156\" viewBox=\"0 0 156 156\"><circle cx=\"78\" cy=\"78\" r=\"70\" fill=\"none\" stroke=\"var(--rule,#2a3d36)\" stroke-width=\"9\"/><circle cx=\"78\" cy=\"78\" r=\"70\" fill=\"none\" stroke=\"var(--accent,#c6f135)\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-dasharray=\"439.8\" stroke-dashoffset=\"150\" transform=\"rotate(-90 78 78)\"/></svg><span class=\"ds-n\">6</span><span class=\"ds-l\">tap per rep</span></div>",
+      "css": ".ds-ring{position:relative;width:9.75rem;height:9.75rem;color:var(--fg,#eaf2ec)}.ds-ring svg{position:absolute;inset:0}.ds-n{position:absolute;left:0;right:0;top:1.25rem;text-align:center;font-size:5.25rem;font-weight:800;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.ds-l{position:absolute;left:0;right:0;bottom:1.625rem;text-align:center;font-size:.9375rem;font-weight:500;color:var(--muted,#a9baaf)}"
+    },
+    {
+      "name": "Disc",
+      "kind": "custom",
+      "refersTo": "plate-button",
+      "description": "Home disc, plate colour sized by days since last; selected gets a lime outline; new is dashed.",
+      "html": "<button class=\"ds-disc\" style=\"--d:96px;background:var(--plate-yellow,#ffd23f)\"><span class=\"ds-name\">Pull</span><span class=\"ds-sub\">6d</span></button> <button class=\"ds-disc ds-sel\" style=\"--d:84px;background:var(--plate-blue,#6aa4ff)\"><span class=\"ds-name\">Push</span><span class=\"ds-sub\">3d</span></button>",
+      "css": ".ds-disc{width:var(--d);height:var(--d);padding:0;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;color:var(--ink,#0b1210);border:3px solid var(--edge,#0f1a17);border-radius:50%;font-family:inherit}.ds-name{font-size:calc(var(--d)*.23);font-weight:800;letter-spacing:-.03em}.ds-sub{font-size:.875rem;font-weight:700}.ds-sel{outline:5px solid var(--accent,#c6f135)}"
+    },
+    {
+      "name": "PR Tag",
+      "kind": "custom",
+      "refersTo": "tag-pr",
+      "description": "Lime pill tag for a real personal best, beside the sticker.",
+      "html": "<span class=\"ds-tag\">PR</span>",
+      "css": ".ds-tag{display:inline-block;padding:.375rem .875rem;background:var(--accent,#c6f135);color:var(--on-accent,#121b05);border-radius:999px;font-size:1rem;font-weight:800}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Barbell",
+    "overview": "Weight is a thing you load, not a number you type. The system is built from the parts of a lifting floor: a deep green ground like gym-wall paint, chalk text, and flat colour-coded plates in real standard sizes with the number printed on each. A barbell drawing is the main control, a ring counts reps, and progress shows as a newly added plate with a lime outline. Everything is a pill, a disc, or a hairline rule. Nothing floats, glows, or casts a shadow.\n\nIt is an operating tool used mid-set with one hand, so density is low and type is large and heavy. Numerals are the content: heavy, tabular, and sized by importance (up to 5.5rem). The primary action sits in the thumb zone. Light and dark are both first-class; dark is default, light follows the phone unless the setting overrides it.",
+    "keyCharacteristics": [
+      "Deep green ground, chalk text, one lime accent (green in light) kept for primary action and progress.",
+      "Plates are the only multi-hue colour, and colour is never the sole carrier: number and size always print too.",
+      "Bricolage Grotesque throughout, weights 500 to 800, tabular numerals, tight negative tracking on big type.",
+      "Pills, discs and 2px hairline rules; no shadows, no gradients.",
+      "48px minimum targets; rem sizes, 14px (0.875rem) smallest text."
+    ],
+    "rules": [
+      { "name": "The Earned Accent Rule", "body": "Lime (green in light) marks only primary actions and progress: the Start pill, filled ring, new plate, PR. If it is on something that is neither, remove it.", "section": "colors" },
+      { "name": "The Number On The Plate Rule", "body": "Plate colour is a hint, never the signal. Every plate shows its number and has its own size, so mono mode loses nothing.", "section": "colors" },
+      { "name": "The Heavy Numeral Rule", "body": "Anything the lifter reads from a distance is weight 800 with tabular figures and negative tracking; units sit beside it at 700 in muted.", "section": "typography" },
+      { "name": "The Flat Plate Rule", "body": "Surfaces are solid fills and outlines. State is shown by outline, fill inversion, or opacity (disabled 0.5), never by shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use lime (green in light) only for the primary action, progress fill, selection outline, new plate and PR.",
+      "Do print the number on every plate and size plates by real rank so colour is never the only cue.",
+      "Do keep every target at 3rem or larger and text at 0.875rem or larger, in rem.",
+      "Do separate list rows with 2px hairline rules rather than wrapping them in cards.",
+      "Do use dashed outlines for provisional or derived things and solid for committed ones.",
+      "Do keep field borders at 3:1 or better against the ground in both themes."
+    ],
+    "donts": [
+      "Don't add shadows, gradients, blur or glass; depth is outline, fill and scrim.",
+      "Don't nest cards or build a dashboard of tiles; the home screen is discs, one pill and rows.",
+      "Don't show a PR sticker unless the best is real.",
+      "Don't introduce a second typeface or fade text below its muted token (placeholders stay at 4.5:1).",
+      "Don't use plate colours for anything but plates and their buttons, discs and category discs."
+    ]
+  }
+}
