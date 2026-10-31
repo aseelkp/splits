@@ -102,7 +102,7 @@ export default function Rest() {
 
       <div className="timer-area">
         <div className="timer" role="timer" aria-label={up ? 'Rest is up' : `Rest timer, ${formatClock(remaining)} left`}>
-          <svg aria-hidden="true" width="212" height="212" viewBox="0 0 212 212">
+          <svg aria-hidden="true" width="100%" height="100%" viewBox="0 0 212 212">
             <circle cx="106" cy="106" r={R} fill="none" stroke="var(--rule)" strokeWidth="12" />
             <circle cx="106" cy="106" r={R} fill="none" stroke="var(--accent)" strokeWidth="12" strokeLinecap="round" strokeDasharray={C} strokeDashoffset={C * (1 - remaining / rest.total)} transform="rotate(-90 106 106)" />
           </svg>

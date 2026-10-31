@@ -14,7 +14,7 @@ export default function PlateButtons({ unit, onAdd }) {
             key={p}
             type="button"
             className={`plate-btn plate-${plateColor(p, unit)}`}
-            style={{ width: d, height: d, fontSize: d > 56 ? '1.375rem' : d > 50 ? '1.125rem' : '0.9375rem' }}
+            style={{ width: `${d / 16}rem`, height: `${d / 16}rem`, fontSize: d > 56 ? '1.375rem' : d > 50 ? '1.125rem' : '0.9375rem' }}
             aria-label={`Add a ${formatWeight(p)} ${unit} plate to each side`}
             onClick={() => onAdd(p)}
           >

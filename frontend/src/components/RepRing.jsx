@@ -10,7 +10,7 @@ export default function RepRing({ reps, last, typing, onTap, onType }) {
 
   return (
     <div className="ring-wrap">
-      <svg aria-hidden="true" width="156" height="156" viewBox="0 0 156 156" style={{ position: 'absolute', inset: 0 }}>
+      <svg aria-hidden="true" width="100%" height="100%" viewBox="0 0 156 156" style={{ position: 'absolute', inset: 0 }}>
         <circle cx="78" cy="78" r={R} fill="none" stroke="var(--rule)" strokeWidth="9" />
         <circle
           cx="78"

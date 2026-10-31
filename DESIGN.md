@@ -245,3 +245,9 @@ The phone layout is the base. Breakpoints are in rem so they follow the user's t
 - **Two panes** on Home (plates and Start on the left, recent lifts on the right), Exercise (stats and chart on the left, history on the right) and Summary (totals on the left, per-exercise on the right). The session screen puts the exercise list and logged sets on the left (17rem) and the barbell and controls on the right (up to 40rem).
 - **Same components, same tokens.** Only the arrangement changes; nothing is redesigned for wide screens. Simple screens (Run, Rest, Settings, Exercises, Login) stay a centred column.
 - **Pointer input:** hover states exist only under `@media (hover: hover)`, so touch screens never show sticky hover.
+
+### Laptops and big monitors
+
+- **Scale, not stretch.** From 90rem (1440px) the whole interface scales up in steps through the root font size: 112.5% at 1440px, 125% at 1920px, 150% at 2560px. These are percentages of the user's own text size, so a larger browser setting still wins. Because every size is in rem (plate buttons, discs, rings and timers included), the composition stays the same and nothing floats as a small island.
+- **Short laptops.** Under 50rem tall at desktop width (about 768px screens) the weight number and barbell are trimmed so the whole set screen, Log button included, fits without scrolling.
+- **Verified** at 1366x768, 1920x1080 and 2560x1440: no sideways overflow, the set screen fits the viewport.

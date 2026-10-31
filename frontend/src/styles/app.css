@@ -1627,3 +1627,51 @@ dialog.sheet::backdrop {
     background: color-mix(in srgb, var(--fg) 7%, transparent);
   }
 }
+
+/* ---------- big monitors and short laptops ----------
+   Everything is sized in rem, so on a big monitor the whole interface is scaled up in steps instead
+   of floating as a small island. These are percentages of the user's own text size, so a larger
+   browser font setting still wins. (Media queries in rem use the browser default, so these steps do
+   not feed back into the breakpoints above.) */
+
+@media (min-width: 90rem) {
+  html {
+    font-size: 112.5%; /* 1440px and up */
+  }
+}
+
+@media (min-width: 120rem) {
+  html {
+    font-size: 125%; /* 1920px and up */
+  }
+}
+
+@media (min-width: 160rem) {
+  html {
+    font-size: 150%; /* 2560px and up */
+  }
+}
+
+/* A short laptop screen (around 768px tall): trim the biggest vertical blocks so the whole set
+   screen, including the Log button, fits without scrolling. */
+@media (min-width: 64rem) and (max-height: 50rem) {
+  .weight-input {
+    font-size: 3.75rem;
+  }
+
+  .weight-unit {
+    font-size: 1.375rem;
+  }
+
+  .bar-wrap {
+    padding-top: 0;
+  }
+
+  .bar-wrap svg {
+    max-height: 6.75rem;
+  }
+
+  .reps {
+    padding-top: 0;
+  }
+}

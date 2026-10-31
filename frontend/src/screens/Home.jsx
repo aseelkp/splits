@@ -142,7 +142,7 @@ export default function Home() {
                 key={type}
                 type="button"
                 className={`disc ${n == null ? 'is-new' : `plate-${DISC_COLOR[type]}`}`}
-                style={{ '--d': `${d}px` }}
+                style={{ '--d': `${d / 16}rem` }}
                 aria-pressed={selected === type}
                 aria-label={n == null ? `${cap(type)}, not logged yet` : `${cap(type)}, ${n} ${n === 1 ? 'day' : 'days'} since last time`}
                 onClick={() => setPicked(type)}
