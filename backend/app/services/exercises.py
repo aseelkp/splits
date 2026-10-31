@@ -46,12 +46,12 @@ def get_exercise(db: Session, exercise_id: int) -> ExerciseOut:
     return ExerciseOut.model_validate(_get(db, exercise_id))
 
 
-def create_exercise(db: Session, data: ExerciseIn) -> ExerciseOut:
+def create_exercise(db: Session, data: ExerciseIn, commit: bool = True) -> ExerciseOut:
     if find_exercise(db, data.name):
         raise ConflictError(f'Exercise "{_clean(data.name)}" already exists.')
     exercise = Exercise(**{**data.model_dump(), "name": _clean(data.name)})
     db.add(exercise)
-    db.commit()
+    db.commit() if commit else db.flush()
     return ExerciseOut.model_validate(exercise)
 
 

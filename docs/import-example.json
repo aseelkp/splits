@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "default_unit": "kg",
+  "exercises": [
+    { "name": "Bench press", "category": "push", "default_unit": "kg" },
+    { "name": "Back squat", "category": "legs", "default_unit": "lbs", "notes": "45 lb bar" },
+    { "name": "Plank", "category": "core" }
+  ],
+  "sessions": [
+    {
+      "date": "2026-10-17",
+      "type": "push",
+      "remark": "placeholder example, not real history",
+      "sets": [
+        { "exercise": "Bench press", "weight": 20, "unit": "kg", "reps": 15, "is_warmup": true },
+        { "exercise": "Bench press", "shorthand": "60x10, 60x9, 60x8", "unit": "kg" },
+        { "exercise": "Pull-up", "shorthand": "bwx8, bwx7", "unit": "kg" },
+        { "exercise": "Plank", "duration_seconds": 60, "remark": "shaky at the end", "unit": "kg" }
+      ]
+    },
+    {
+      "date": "2026-10-20",
+      "type": "lower",
+      "sets": [
+        { "exercise": "Back squat", "shorthand": "135x5, 185x5, 205x2x5", "unit": "lbs" },
+        { "exercise": "Leg press", "weight": 270, "unit": "lbs", "reps": 10 }
+      ]
+    },
+    {
+      "date": "2026-10-22",
+      "type": "run",
+      "run": {
+        "mode": "indoor",
+        "duration_seconds": 1210,
+        "distance_km": 3.2,
+        "incline_percent": 1.0,
+        "avg_hr": 152,
+        "max_hr": 174,
+        "structure": "5x(4 run/1 walk) at 8 km/h"
+      }
+    },
+    {
+      "date": "2026-10-24",
+      "type": "push",
+      "sets": [{ "exercise": "Bench press", "shorthand": "60x2x10, 62.5x8", "unit": "kg" }],
+      "run": { "mode": "outdoor", "distance_km": 1.5, "remark": "cool-down jog" }
+    }
+  ]
+}

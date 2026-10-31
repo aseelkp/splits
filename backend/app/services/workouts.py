@@ -71,13 +71,18 @@ def _build_run(data: RunIn) -> Run:
     return Run(**values)
 
 
-def create_session(db: Session, data: SessionIn) -> LogResult:
+def _finish(db: Session, commit: bool) -> None:
+    """Commit, or (commit=False) just send the SQL so ids exist and the caller owns the transaction."""
+    db.commit() if commit else db.flush()
+
+
+def create_session(db: Session, data: SessionIn, commit: bool = True) -> LogResult:
     ws = WorkoutSession(date=data.date or today(), type=data.type, remark=data.remark)
     ws.sets, created = _build_sets(db, data.sets, first_order=1)
     if data.run:
         ws.run = _build_run(data.run)
     db.add(ws)
-    db.commit()
+    _finish(db, commit)
     return LogResult(session=session_out(_get_session(db, ws.id)), created_exercises=created)
 
 
@@ -116,12 +121,12 @@ def update_session(db: Session, session_id: int, data: SessionUpdate) -> Session
     return session_out(ws)
 
 
-def delete_session(db: Session, session_id: int) -> SessionOut:
+def delete_session(db: Session, session_id: int, commit: bool = True) -> SessionOut:
     """Delete a session with its sets and run. Returns what was deleted, so callers can confirm it."""
     ws = _get_session(db, session_id)
     deleted = session_out(ws)
     db.delete(ws)
-    db.commit()
+    _finish(db, commit)
     return deleted
 
 
