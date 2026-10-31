@@ -1,0 +1,72 @@
+/* Design tokens. Dark is the default; light follows the phone (auto) or the setting. */
+
+:root {
+  --bg: #0f1a17;
+  --fg: #eaf2ec;
+  --muted: #a9baaf;
+  --rule: #2a3d36;
+  --field: #6f8a7e; /* input borders: 3:1 against the ground */
+  --accent: #c6f135; /* primary actions and progress only */
+  --on-accent: #121b05;
+  --sheet: #162620;
+  --scrim: #070d0b;
+  --err: #ff8a8a;
+  --edge: #0f1a17; /* outline around plates */
+  --ink: #0b1210; /* dark numerals printed on bright plates */
+
+  /* Plate colours, the same in both themes. Every plate also has its number printed on it. */
+  --plate-blue: #6aa4ff;
+  --plate-green: #3ddc97;
+  --plate-yellow: #ffd23f;
+  --plate-white: #f2f5f3;
+  --plate-red: #ff7a7a;
+  --plate-silver: #b9c7be;
+  --plate-neutral: #7f968a;
+
+  --font: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', system-ui, sans-serif;
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  --bg: #f1f5ee;
+  --fg: #101a15;
+  --muted: #4f6056;
+  --rule: #c9d5cb;
+  --field: #7a8f82;
+  --accent: #2f7d1f;
+  --on-accent: #ffffff;
+  --sheet: #f1f5ee;
+  --scrim: #9faaa1;
+  --err: #b3261e;
+  --edge: #101a15;
+  --plate-neutral: #9db0a3;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme='auto'] {
+    --bg: #f1f5ee;
+    --fg: #101a15;
+    --muted: #4f6056;
+    --rule: #c9d5cb;
+    --field: #7a8f82;
+    --accent: #2f7d1f;
+    --on-accent: #ffffff;
+    --sheet: #f1f5ee;
+    --scrim: #9faaa1;
+    --err: #b3261e;
+    --edge: #101a15;
+    --plate-neutral: #9db0a3;
+    color-scheme: light;
+  }
+}
+
+/* Mono plates: every plate takes the neutral colour. Numbers and sizes still tell them apart. */
+:root[data-plates='mono'] {
+  --plate-blue: var(--plate-neutral);
+  --plate-green: var(--plate-neutral);
+  --plate-yellow: var(--plate-neutral);
+  --plate-white: var(--plate-neutral);
+  --plate-red: var(--plate-neutral);
+  --plate-silver: var(--plate-neutral);
+}
