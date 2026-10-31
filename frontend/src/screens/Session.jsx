@@ -143,10 +143,11 @@ function SetScreen() {
   }
 
   return (
-    <div className="screen">
+    <div className="screen split split-session">
       {topbar}
       {strip}
 
+      <div className="set-panel">
       <div className="ex-head">
         <h1>{ex.name}</h1>
         <div className="seg small" role="group" aria-label="Weight unit">
@@ -218,6 +219,8 @@ function SetScreen() {
         <button type="button" className="btn-primary plain" style={{ marginTop: error ? '0.75rem' : 0 }} onClick={logSet} disabled={busy}>
           {busy ? 'Saving' : `Log set ${setNo}`}
         </button>
+      </div>
+
       </div>
 
       <div className="chips">

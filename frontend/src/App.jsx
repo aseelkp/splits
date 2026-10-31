@@ -1,6 +1,7 @@
 import { Component, useEffect, useState } from 'react'
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { api, onUnauthorized } from './api'
+import Rail from './components/Rail'
 import { SessionProvider, useSession } from './session/SessionContext'
 import ExercisePage from './screens/ExercisePage'
 import Exercises from './screens/Exercises'
@@ -86,8 +87,10 @@ function AppInner() {
     <BrowserRouter>
       <SessionProvider>
         <ScrollToTop />
-        <main className="app">
-          <Routes>
+        <div className="shell">
+          <Rail />
+          <main className="app">
+            <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/session" element={<NeedsDraft><Session /></NeedsDraft>} />
             <Route path="/run" element={<NeedsDraft><Run /></NeedsDraft>} />
@@ -96,8 +99,9 @@ function AppInner() {
             <Route path="/summary/:id" element={<Summary />} />
             <Route path="/settings" element={<Settings onLogout={() => setAuth('out')} />} />
             <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </main>
+            </Routes>
+          </main>
+        </div>
       </SessionProvider>
     </BrowserRouter>
   )

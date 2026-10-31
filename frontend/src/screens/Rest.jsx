@@ -72,9 +72,9 @@ export default function Rest() {
         <button type="button" className="iconbtn" aria-label="Back to the set screen" onClick={endRest}>
           <Icon name="back" />
         </button>
-        <span className="topbar-title">
+        <h1 className="topbar-title">
           {cap(draft.type)}, {shortDate(todayIST())}
-        </span>
+        </h1>
         <span className="topbar-note">Saved</span>
       </header>
 

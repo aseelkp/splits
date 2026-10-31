@@ -94,7 +94,7 @@ export default function Summary() {
   const runPace = run ? pace(run.duration_seconds, run.distance_km) : null
 
   return (
-    <div className="screen">
+    <div className="screen split">
       <header className="topbar" style={{ paddingBottom: 0 }}>
         <Link to="/" className="iconbtn" aria-label="Back to home">
           <Icon name="back" />
@@ -102,6 +102,7 @@ export default function Summary() {
         <span className="topbar-note" aria-live="polite" />
       </header>
 
+      <div className="split-main">
       <div className="summary-head" style={{ paddingTop: '0.5rem' }}>
         <div>
           <h1>{cap(session.type)}, done.</h1>
@@ -150,6 +151,9 @@ export default function Summary() {
         </div>
       )}
 
+      </div>
+
+      <div className="split-side">
       {rows.length > 0 && (
         <>
           <h2 className="section-title" style={{ paddingTop: '1.25rem' }}>By exercise</h2>
@@ -205,6 +209,7 @@ export default function Summary() {
             </div>
           )}
         </div>
+      </div>
       </div>
     </div>
   )

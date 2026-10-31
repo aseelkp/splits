@@ -124,9 +124,9 @@ export default function Run() {
         <Link to={draft.type === 'run' ? '/' : '/session'} className="iconbtn" aria-label="Back">
           <Icon name="back" />
         </Link>
-        <span className="topbar-title">
+        <h1 className="topbar-title">
           {draft.type === 'run' ? 'Run' : `${cap(draft.type)} + run`}, {shortDate(todayIST())}
-        </span>
+        </h1>
         <span className="topbar-note" aria-live="polite">
           {status === 'saving' ? 'Saving' : status === 'saved' ? 'Saved' : ''}
         </span>

@@ -21,7 +21,7 @@ function Bars({ points, unit }) {
   const label = `Bar chart of your heaviest ${unit} set per session, from ${formatWeight(points[0].weight)} on ${shortDate(points[0].date)} to ${formatWeight(points[n - 1].weight)} on ${shortDate(points[n - 1].date)}. Bars start at zero.`
 
   return (
-    <svg role="img" aria-label={label} width="100%" viewBox={`0 0 ${W} 196`} style={{ display: 'block', maxWidth: W }}>
+    <svg role="img" aria-label={label} width="100%" viewBox={`0 0 ${W} 196`} style={{ display: 'block', maxWidth: '36rem' }}>
       <line x1="0" y1={BASE + 8} x2={W} y2={BASE + 8} stroke="var(--rule)" strokeWidth="2" />
       {points.map((p, i) => {
         const h = Math.max(4, (p.weight / max) * MAX_H)
@@ -87,7 +87,7 @@ export default function ExercisePage() {
   const gain = points.length > 1 ? round2(points[points.length - 1].weight - points[0].weight) : 0
 
   return (
-    <div className="screen">
+    <div className="screen split">
       <header className="topbar">
         <Link to="/exercises" className="iconbtn" aria-label="Back to exercises">
           <Icon name="back" />
@@ -101,6 +101,7 @@ export default function ExercisePage() {
 
       {exercise && history && (
         <>
+          <div className="split-main">
           <div className="page-head">
             <h1>{exercise.name}</h1>
             <p>
@@ -154,6 +155,12 @@ export default function ExercisePage() {
                 </>
               )}
 
+            </>
+          )}
+          </div>
+
+          {history.length > 0 && (
+            <div className="split-side">
               <h2 className="section-title">History</h2>
               <div className="list">
                 {groups.map((g) => (
@@ -170,7 +177,7 @@ export default function ExercisePage() {
                   </div>
                 ))}
               </div>
-            </>
+            </div>
           )}
         </>
       )}

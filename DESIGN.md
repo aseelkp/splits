@@ -235,3 +235,13 @@ The timer is a 13.25rem ring with a 4.5rem time. The run track is a 5.125rem-tal
 - **Don't** show a PR sticker unless the best is real.
 - **Don't** introduce a second typeface or fade text below its muted token (placeholders stay at 4.5:1).
 - **Don't** use plate colours for anything but plates and their buttons, discs and category discs.
+
+## Larger Screens
+
+The phone layout is the base. Breakpoints are in rem so they follow the user's text size.
+
+- **48rem and up (tablet):** the single column is centred at 40rem. Bottom sheets become centred dialogs.
+- **64rem and up (desktop):** a 15rem navigation rail appears (Home, Exercises, Settings, and a Resume card while a session is in progress). The Home header links and wordmark are hidden because the rail replaces them.
+- **Two panes** on Home (plates and Start on the left, recent lifts on the right), Exercise (stats and chart on the left, history on the right) and Summary (totals on the left, per-exercise on the right). The session screen puts the exercise list and logged sets on the left (17rem) and the barbell and controls on the right (up to 40rem).
+- **Same components, same tokens.** Only the arrangement changes; nothing is redesigned for wide screens. Simple screens (Run, Rest, Settings, Exercises, Login) stay a centred column.
+- **Pointer input:** hover states exist only under `@media (hover: hover)`, so touch screens never show sticky hover.

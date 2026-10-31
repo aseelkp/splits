@@ -32,7 +32,7 @@ export default function Settings({ onLogout }) {
         <Link to="/" className="iconbtn" aria-label="Back to home">
           <Icon name="back" />
         </Link>
-        <span className="topbar-title">Settings</span>
+        <h1 className="topbar-title">Settings</h1>
         <span style={{ width: '3rem' }} />
       </header>
 

@@ -28,7 +28,7 @@ export default function Exercises() {
         <Link to="/" className="iconbtn" aria-label="Back to home">
           <Icon name="back" />
         </Link>
-        <span className="topbar-title">Exercises</span>
+        <h1 className="topbar-title">Exercises</h1>
         <span style={{ width: '3rem' }} />
       </header>
 

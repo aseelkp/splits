@@ -92,8 +92,8 @@ export default function Home() {
   const sub = `${weekday(today)} ${shortDate(today)}${due && !draft ? `. ${days(last[due].date)} days since your last ${due}.` : ''}`
 
   return (
-    <div className="screen">
-      <header className="topbar" style={{ paddingLeft: '1.25rem' }}>
+    <div className="screen split">
+      <header className="topbar hide-wide" style={{ paddingLeft: '1.25rem' }}>
         <span className="home-title">splits</span>
         <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
           <Link to="/settings" className="iconbtn" aria-label="Settings">
@@ -105,6 +105,7 @@ export default function Home() {
         </span>
       </header>
 
+      <div className="split-main">
       <section className="hero">
         <h1>{heading}</h1>
         <p>{sub}</p>
@@ -166,7 +167,9 @@ export default function Home() {
       )}
 
       <ErrorLine>{error}</ErrorLine>
+      </div>
 
+      <div className="split-side">
       <h2 className="section-title">Recent lifts</h2>
       {sessions === null && !error && <div className="skeleton" aria-hidden="true" />}
       {sessions && sessions.length === 0 && <p className="empty">Nothing logged yet. Start your first session above.</p>}
@@ -195,6 +198,7 @@ export default function Home() {
           })}
         </div>
       )}
+      </div>
     </div>
   )
 }

@@ -28,7 +28,7 @@ export default function Bar({ plates, flags = [], unit }) {
     : `Empty ${UNITS[unit].bar} ${unit} bar.`
 
   return (
-    <svg role="img" aria-label={label} width="100%" viewBox="0 0 350 108" style={{ display: 'block', maxWidth: 350 }}>
+    <svg role="img" aria-label={label} width="100%" viewBox="0 0 350 108" style={{ display: 'block', maxWidth: '34rem' }}>
       <rect x="0" y="50" width="350" height="8" rx="3" fill="var(--muted)" />
       <rect x="136" y="50" width="78" height="8" fill="var(--fg)" opacity="0.5" />
       <rect x={COLLAR_X} y="42" width="7" height="24" rx="2" fill="var(--fg)" />
