@@ -1,0 +1,23 @@
+# Secrets and local config
+.env
+.env.*
+!.env.example
+.claude/settings.local.json
+.impeccable/*.local.*
+.impeccable/config.local.json
+
+# Impeccable engine binary (re-downloaded by `npx impeccable install`)
+.claude/skills/impeccable/scripts/bin/
+
+# Python / backend
+.venv/
+__pycache__/
+.pytest_cache/
+*.db
+
+# Node / frontend
+node_modules/
+dist/
+
+# Vercel
+.vercel/
