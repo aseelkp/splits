@@ -645,15 +645,20 @@ input {
 
 /* Where "last time" came from, and the other kind of session's number when it differs. */
 .last-note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 0.875rem;
   margin: 0;
+  padding: 0 1.25rem;
   font-size: 0.9375rem;
   color: var(--muted);
 }
 
+/* One compact row, so the Log set button stays on screen on a phone. */
 .last-note .link-btn {
-  min-height: 2.75rem;
+  min-height: 2.25rem;
   padding-inline: 0;
-  text-align: left;
   font-size: inherit;
 }
 

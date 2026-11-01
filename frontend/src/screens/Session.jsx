@@ -127,10 +127,12 @@ function SetScreen() {
   if (ref && !refSame) caption += ` Last time was ${ref.weight != null ? formatWeight(ref.weight) : 'bodyweight'} ${ref.unit}, so there is nothing to compare.`
 
   // Where "last time" came from. The exercise decides it, so it can be another kind of session.
+  // Short form for one row: "62.5 x 8" (the unit is added only if it is not the one on screen).
   const brief = (sets) => {
     const f = sets[0]
-    return `${f.weight != null ? formatWeight(f.weight) : 'BW'} ${f.unit} x ${f.reps}${sets.length > 1 ? `, ${sets.length} sets` : ''}`
+    return `${f.weight != null ? formatWeight(f.weight) : 'BW'}${f.unit !== ex.unit ? ` ${f.unit}` : ''} x ${f.reps}`
   }
+  const full = (sets) => `${brief(sets)} ${sets[0].unit}, ${sets.length} ${sets.length === 1 ? 'set' : 'sets'}`
   const lastSame = ex.lastSame?.sets?.length ? ex.lastSame : null
   const useLastSame = () => set({ unit: lastSame.sets[0].unit, weight: lastSame.sets[0].weight ?? 0, plateStack: [] })
 
@@ -188,14 +190,13 @@ function SetScreen() {
 
       {ex.lastSets.length > 0 && (
         <p className="last-note">
-          Last time{ex.lastType ? `, ${cap(ex.lastType)}` : ''} ({shortDate(ex.lastDate)}): {brief(ex.lastSets)}.
+          <span title={`${shortDate(ex.lastDate)}: ${full(ex.lastSets)}`}>
+            Last time{ex.lastType ? ` (${cap(ex.lastType)})` : ''}: {brief(ex.lastSets)}
+          </span>
           {lastSame && (
-            <>
-              {' '}
-              <button type="button" className="link-btn" onClick={useLastSame}>
-                Last {draft.type} day ({shortDate(lastSame.date)}): {brief(lastSame.sets)}. Use that
-              </button>
-            </>
+            <button type="button" className="link-btn" onClick={useLastSame} aria-label={`Use the weight from your last ${draft.type} day, ${shortDate(lastSame.date)}: ${full(lastSame.sets)}`}>
+              {cap(draft.type)} day: {brief(lastSame.sets)}
+            </button>
           )}
         </p>
       )}
