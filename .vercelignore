@@ -1,0 +1,11 @@
+# Only matters for `vercel deploy` from your machine (a Git deploy never sees ignored files).
+.claude/
+.impeccable/
+docs/
+backend/tests/
+backend/scripts/
+backend/.venv/
+backend/.env
+backend/*.db
+frontend/node_modules/
+frontend/dist/

@@ -22,3 +22,6 @@ dist/
 
 # Vercel
 .vercel/
+
+# Personal training history (already imported; keep out of the repo)
+docs/history-import.json
