@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { api, ApiError } from '../api'
-import { bestWeight, commonUnit, groupByExercise } from '../lib/stats'
+import { bestWeight, commonUnit, groupByExercise, lastTime } from '../lib/stats'
 import { draft, patchDraft, patchExercise } from '../store/draft'
 import { settings } from '../store/settings'
 
@@ -16,7 +16,19 @@ export const useSession = () => useContext(Ctx)
 
 const working = (s) => !s.is_warmup
 
-/** Build the draft's exercise list from last time's session of the same type. */
+/** One draft exercise, pre-filled from the exercise's own history (see lastTime in lib/stats). */
+function buildExercise(name, fallbackUnit, { latest, sameType }) {
+  const lastSets = latest?.sets ?? []
+  const unit = lastSets.length ? commonUnit(lastSets, fallbackUnit) : fallbackUnit
+  const first = lastSets.find((s) => s.unit === unit)
+  return { name, unit, weight: first?.weight ?? 0, reps: 0, warmup: false, plateStack: [], lastSets, lastDate: latest?.date ?? null, lastType: latest?.type ?? null, lastSame: sameType }
+}
+
+/**
+ * Which exercises a new session starts with: those of the last session of the same type (a saved,
+ * editable routine is planned). Their numbers are only a fallback: startSession replaces them with
+ * each exercise's own latest sets.
+ */
 function exercisesFromLast(last) {
   if (!last) return []
   return groupByExercise(last.sets).map((g) => {
@@ -96,7 +108,20 @@ export function SessionProvider({ children }) {
     setBusy(true)
     try {
       const last = await api.sessions.last(type)
-      draft.set({ type, sessionId: null, active: 0, exercises: exercisesFromLast(last), rest: null, startedAt: Date.now() })
+      // The list comes from the last session of this type; the numbers come from each exercise's own history.
+      const exercises = await Promise.all(
+        exercisesFromLast(last).map(async (ex) => {
+          try {
+            const found = await idFor(ex.name)
+            if (!found) return ex
+            const t = lastTime(await api.exercises.history(found.id, 200), type)
+            return t.latest ? buildExercise(ex.name, ex.unit, t) : ex
+          } catch {
+            return ex // fall back to the last session's numbers
+          }
+        }),
+      )
+      draft.set({ type, sessionId: null, active: 0, exercises, rest: null, startedAt: Date.now() })
       setSession(null)
       setBests({})
       return true
@@ -106,7 +131,7 @@ export function SessionProvider({ children }) {
     } finally {
       setBusy(false)
     }
-  }, [])
+  }, [idFor])
 
   /** Create the session on the server if this is the first thing saved. Returns its id. */
   const ensureSession = useCallback(async (extra = {}) => {
@@ -194,26 +219,16 @@ export function SessionProvider({ children }) {
         patchDraft({ active: existing })
         return
       }
-      let lastSets = []
-      let lastDate = null
+      let t = { latest: null, sameType: null }
       try {
         const found = await idFor(name)
-        if (found) {
-          const history = (await api.exercises.history(found.id, 60)).filter((h) => h.session_id !== cur.sessionId && !h.is_warmup)
-          const newest = history[0]
-          if (newest) {
-            lastDate = newest.date
-            lastSets = history.filter((h) => h.session_id === newest.session_id).sort((a, b) => a.set_order - b.set_order).map((h) => ({ weight: h.weight, unit: h.unit, reps: h.reps ?? 0 }))
-          }
-        }
+        if (found) t = lastTime(await api.exercises.history(found.id, 200), cur.type, cur.sessionId)
       } catch {
         /* a new exercise can start without history */
       }
-      const useUnit = lastSets.length ? commonUnit(lastSets.map((s) => ({ unit: s.unit }))) : unit
-      const first = lastSets.find((s) => s.unit === useUnit)
       draft.set((x) => ({
         ...x,
-        exercises: [...x.exercises, { name, unit: useUnit, weight: first?.weight ?? 0, reps: 0, warmup: false, plateStack: [], lastSets, lastDate }],
+        exercises: [...x.exercises, buildExercise(name, unit, t)],
         active: x.exercises.length,
       }))
     },

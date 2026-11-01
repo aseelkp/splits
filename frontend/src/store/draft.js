@@ -6,7 +6,7 @@ import { createNullableStore } from './createStore'
 //
 // {
 //   type, sessionId | null, active: index,
-//   exercises: [{ name, unit, weight, reps, warmup, plateStack: number[], lastSets: [{weight, unit, reps}], lastDate }],
+//   exercises: [{ name, unit, weight, reps, warmup, plateStack: number[], lastSets: [{weight, unit, reps}], lastDate, lastType, lastSame: { date, type, sets } | null }],
 //   rest: { endsAt, total, result: { exercise, setNo, weight, unit, reps, isPr, prevBest } } | null,
 // }
 export const draft = createNullableStore('splits.draft.v1')

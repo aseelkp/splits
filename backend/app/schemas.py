@@ -142,3 +142,4 @@ class LogResult(BaseModel):
 
 class HistorySet(SetOut):
     date: dt.date
+    session_type: SessionType  # push, pull, upper... so callers can tell where the set was done

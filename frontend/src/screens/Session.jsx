@@ -126,6 +126,14 @@ function SetScreen() {
   else caption = `Each side: ${plates.map(formatWeight).join(' + ')}.${flags.some(Boolean) ? ' Outlined plates are new since last time.' : ''}`
   if (ref && !refSame) caption += ` Last time was ${ref.weight != null ? formatWeight(ref.weight) : 'bodyweight'} ${ref.unit}, so there is nothing to compare.`
 
+  // Where "last time" came from. The exercise decides it, so it can be another kind of session.
+  const brief = (sets) => {
+    const f = sets[0]
+    return `${f.weight != null ? formatWeight(f.weight) : 'BW'} ${f.unit} x ${f.reps}${sets.length > 1 ? `, ${sets.length} sets` : ''}`
+  }
+  const lastSame = ex.lastSame?.sets?.length ? ex.lastSame : null
+  const useLastSame = () => set({ unit: lastSame.sets[0].unit, weight: lastSame.sets[0].weight ?? 0, plateStack: [] })
+
   const sameReps = logged.length ? logged[logged.length - 1].reps : ref?.reps
   const set = (changes) => patchExercise(idx, changes)
 
@@ -177,6 +185,20 @@ function SetScreen() {
           </span>
         )}
       </div>
+
+      {ex.lastSets.length > 0 && (
+        <p className="last-note">
+          Last time{ex.lastType ? `, ${cap(ex.lastType)}` : ''} ({shortDate(ex.lastDate)}): {brief(ex.lastSets)}.
+          {lastSame && (
+            <>
+              {' '}
+              <button type="button" className="link-btn" onClick={useLastSame}>
+                Last {draft.type} day ({shortDate(lastSame.date)}): {brief(lastSame.sets)}. Use that
+              </button>
+            </>
+          )}
+        </p>
+      )}
 
       <div className="bar-wrap">
         <Bar plates={plates} flags={flags} unit={ex.unit} />

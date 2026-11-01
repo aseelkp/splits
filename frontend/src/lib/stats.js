@@ -107,3 +107,29 @@ export function dueType(last, daysSince) {
   }
   return due
 }
+
+/**
+ * What "last time" means for one exercise. The exercise is what matters, not the day it was done on:
+ * pre-fill from its most recent working sets in ANY session. If that was a different kind of session
+ * than the one you are starting, also report the latest one of this kind (`sameType`), so the screen
+ * can say "last Upper: 10 kg" next to "last time: 15 kg" and you can pick.
+ *
+ * `history` is the API's list of sets for the exercise, newest first. Warm-ups and the session being
+ * logged right now (`excludeSessionId`) are ignored.
+ */
+export function lastTime(history, type, excludeSessionId = null) {
+  const rows = history.filter((h) => !h.is_warmup && h.session_id !== excludeSessionId)
+  const pick = (list) => {
+    if (!list.length) return null
+    const first = list[0]
+    const sets = list
+      .filter((h) => h.session_id === first.session_id)
+      .sort((a, b) => a.set_order - b.set_order)
+      .map((h) => ({ weight: h.weight, unit: h.unit, reps: h.reps ?? 0 }))
+    return { date: first.date, type: first.session_type, sets }
+  }
+  const latest = pick(rows)
+  const same = latest && latest.type !== type ? pick(rows.filter((h) => h.session_type === type)) : null
+  return { latest, sameType: same }
+}
+

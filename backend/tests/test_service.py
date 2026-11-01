@@ -186,3 +186,11 @@ def test_exercise_crud_rules(db):
         exercises.delete_exercise(db, created.id)
     exercises.delete_exercise(db, other.id)
     assert [e.name for e in exercises.list_exercises(db)] == ["Deadlift"]
+
+
+def test_exercise_history_says_which_session_type_each_set_was_done_in(db):
+    # The same exercise in two different kinds of session: history is per exercise, tagged by session type.
+    log(db, D1, type="upper", sets=[SetIn(exercise="Bench press", shorthand="10x10")])
+    log(db, D2, type="push", sets=[SetIn(exercise="Bench press", shorthand="15x10")])
+    history = exercises.get_exercise_history(db, "Bench press")
+    assert [(h.date, h.session_type, h.weight) for h in history] == [(D2, "push", 15), (D1, "upper", 10)]

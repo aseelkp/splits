@@ -88,11 +88,11 @@ def get_exercise_history(db: Session, exercise: str | int, limit: int = 50) -> l
         if not found:
             raise NotFoundError(f'No exercise named "{exercise}". Use list_exercises to see exact names.')
     rows = db.execute(
-        select(ExerciseSet, WorkoutSession.date)
+        select(ExerciseSet, WorkoutSession.date, WorkoutSession.type)
         .join(WorkoutSession, ExerciseSet.session_id == WorkoutSession.id)
         .where(ExerciseSet.exercise_id == found.id)
         .order_by(WorkoutSession.date.desc(), WorkoutSession.id.desc(), ExerciseSet.set_order)
         .limit(limit)
     )
-    return [HistorySet(**set_out(s).model_dump(), date=d) for s, d in rows]
+    return [HistorySet(**set_out(s).model_dump(), date=d, session_type=t) for s, d, t in rows]
 

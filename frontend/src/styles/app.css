@@ -643,6 +643,20 @@ input {
   color: var(--muted);
 }
 
+/* Where "last time" came from, and the other kind of session's number when it differs. */
+.last-note {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+.last-note .link-btn {
+  min-height: 2.75rem;
+  padding-inline: 0;
+  text-align: left;
+  font-size: inherit;
+}
+
 .plate-buttons {
   display: flex;
   justify-content: space-between;

@@ -10,6 +10,7 @@ import {
   groupByExercise,
   groupBySession,
   lastByType,
+  lastTime,
   previousOfSameType,
   sessionPoints,
   totalsByUnit,
@@ -176,3 +177,36 @@ describe('session helpers', () => {
     expect(dueType({}, days)).toBeNull()
   })
 })
+
+describe('lastTime: the exercise decides what last time was, not the kind of session', () => {
+  // newest first, like the API. Bench in a push session (15 kg) after an upper session (10 kg).
+  const h = (id, date, type, order, weight, extra = {}) => ({ session_id: id, date, session_type: type, set_order: order, weight, unit: 'kg', reps: 10, is_warmup: false, ...extra })
+  const history = [h(3, '2026-10-20', 'push', 1, 15), h(3, '2026-10-20', 'push', 2, 15), h(2, '2026-10-10', 'upper', 1, 10), h(1, '2026-10-01', 'push', 1, 12.5)]
+
+  it('uses the most recent session of any type, and tells you about the latest of this type', () => {
+    const r = lastTime(history, 'upper')
+    expect(r.latest).toMatchObject({ date: '2026-10-20', type: 'push' })
+    expect(r.latest.sets.map((s) => s.weight)).toEqual([15, 15])
+    expect(r.sameType).toMatchObject({ date: '2026-10-10', type: 'upper' })
+    expect(r.sameType.sets.map((s) => s.weight)).toEqual([10])
+  })
+
+  it('has no separate hint when the latest session is already this type', () => {
+    expect(lastTime(history, 'push').sameType).toBeNull()
+  })
+
+  it('has no hint when it was never done in this type of session', () => {
+    expect(lastTime(history, 'lower').sameType).toBeNull()
+    expect(lastTime(history, 'lower').latest.date).toBe('2026-10-20')
+  })
+
+  it('ignores warm-ups and the session being logged now', () => {
+    const withWarm = [h(4, '2026-10-30', 'upper', 1, 5, { is_warmup: true }), h(5, '2026-10-31', 'upper', 1, 99), ...history]
+    expect(lastTime(withWarm, 'upper', 5).latest.date).toBe('2026-10-20')
+  })
+
+  it('is empty for an exercise with no history', () => {
+    expect(lastTime([], 'push')).toEqual({ latest: null, sameType: null })
+  })
+})
+
