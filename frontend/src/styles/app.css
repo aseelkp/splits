@@ -280,6 +280,19 @@ input {
   font-weight: 800;
 }
 
+.setting p + .seg {
+  margin-top: 0.625rem;
+}
+
+/* More choices than fit in one row (the routine picker): wrap instead of running off the screen. */
+.seg.wrap {
+  flex-wrap: wrap;
+}
+
+.seg.wrap .pill {
+  flex: 1 1 auto;
+}
+
 .seg.small .pill {
   flex: 0 0 auto;
   min-width: 3.5rem;

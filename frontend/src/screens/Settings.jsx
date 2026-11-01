@@ -76,7 +76,7 @@ export default function Settings({ onLogout }) {
         <section className="setting">
           <h2>Routines</h2>
           <p style={{ paddingTop: 0 }}>The exercises each kind of session starts with. Change them any time.</p>
-          <div className="seg" role="group" aria-label="Edit a routine">
+          <div className="seg wrap" role="group" aria-label="Edit a routine">
             {ROUTINE_TYPES.map((t) => (
               <Link key={t} to={`/routines/${t}`} className="pill">
                 {t[0].toUpperCase() + t.slice(1)}
