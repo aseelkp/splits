@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import CancelSession from '../components/CancelSession'
 import Icon from '../components/Icon'
 import PrSticker from '../components/PrSticker'
 import { shortDate, todayIST } from '../lib/dates'
@@ -168,6 +169,7 @@ export default function Rest() {
           </button>
         )}
       </div>
+      <CancelSession />
     </div>
   )
 }

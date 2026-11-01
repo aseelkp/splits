@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Bar from '../components/Bar'
+import CancelSession from '../components/CancelSession'
 import ErrorLine from '../components/ErrorLine'
 import Icon from '../components/Icon'
 import PlateButtons from '../components/PlateButtons'
@@ -92,6 +93,9 @@ function SetScreen() {
           <button type="button" className="btn-primary plain" onClick={() => setSheet('add')}>
             Add exercise
           </button>
+        </div>
+        <div className="pad" style={{ paddingTop: '0.5rem' }}>
+          <CancelSession />
         </div>
         <AddExerciseSheet open={sheet === 'add'} onClose={() => setSheet(null)} />
       </div>
@@ -239,6 +243,10 @@ function SetScreen() {
         <button type="button" className="link-btn" style={{ flex: '0 0 auto' }} onClick={() => { setError(''); setSheet('shorthand') }}>
           Shorthand
         </button>
+      </div>
+
+      <div className="pad" style={{ paddingTop: '0.5rem' }}>
+        <CancelSession />
       </div>
 
       <AddExerciseSheet open={sheet === 'add'} onClose={() => setSheet(null)} />

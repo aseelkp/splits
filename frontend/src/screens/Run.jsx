@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../api'
+import CancelSession from '../components/CancelSession'
 import ErrorLine from '../components/ErrorLine'
 import Icon from '../components/Icon'
 import { shortDate, todayIST } from '../lib/dates'
@@ -204,6 +205,7 @@ export default function Run() {
         <button type="button" className="btn-primary plain" onClick={done} disabled={Boolean(timeError)}>
           {draft.type === 'run' ? 'Finish run' : 'Done'}
         </button>
+        <CancelSession />
       </div>
     </div>
   )

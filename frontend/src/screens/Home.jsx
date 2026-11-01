@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { api, ApiError } from '../api'
 import ErrorLine from '../components/ErrorLine'
+import CancelSession from '../components/CancelSession'
 import Icon from '../components/Icon'
 import { daysBetween, shortDate, todayIST, weekday } from '../lib/dates'
 import { formatWeight, plateColor, platesPerSide } from '../lib/units'
@@ -133,6 +134,7 @@ export default function Home() {
               Finish this session
             </button>
           </div>
+          <CancelSession />
         </section>
       ) : (
         <>

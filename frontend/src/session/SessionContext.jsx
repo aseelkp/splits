@@ -244,6 +244,23 @@ export function SessionProvider({ children }) {
   }, [])
 
   /**
+   * Cancel the session: delete whatever was saved on the server, then forget the draft.
+   * If the delete fails (offline, server error) the draft is kept so nothing is half-cancelled.
+   * A 404 means it is already gone, which is the outcome we wanted.
+   */
+  const cancelSession = useCallback(async () => {
+    const id = draft.get()?.sessionId
+    if (id) {
+      try {
+        await api.sessions.remove(id)
+      } catch (e) {
+        if (!(e instanceof ApiError && e.status === 404)) throw e
+      }
+    }
+    endSession()
+  }, [endSession])
+
+  /**
    * Finish the session. Returns the id to show a summary for. When something was saved, the draft is
    * kept until the summary opens (it calls endSession): clearing it here would trip the route guard
    * and bounce you home before the summary shows. When nothing was saved there is nothing to show.
@@ -255,8 +272,8 @@ export function SessionProvider({ children }) {
   }, [endSession])
 
   const value = useMemo(
-    () => ({ draft: d, session, bests, busy, error, setError, startSession, logSet, addShorthand, editSet, removeSet, addExercise, saveRun, finish, endSession }),
-    [d, session, bests, busy, error, startSession, logSet, addShorthand, editSet, removeSet, addExercise, saveRun, finish, endSession],
+    () => ({ draft: d, session, bests, busy, error, setError, startSession, logSet, addShorthand, editSet, removeSet, addExercise, saveRun, finish, endSession, cancelSession }),
+    [d, session, bests, busy, error, startSession, logSet, addShorthand, editSet, removeSet, addExercise, saveRun, finish, endSession, cancelSession],
   )
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>
 }
