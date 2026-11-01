@@ -83,7 +83,7 @@ export default function Home() {
     ? 'First one. You can add exercises as you go.'
     : selected === 'run'
       ? `Last run: ${Number(lastSel.run?.distance_km ?? 0).toFixed(2)} km on ${shortDate(lastSel.date)}.`
-      : `Starts pre-filled from ${shortDate(lastSel.date)}: ${exerciseCount} ${exerciseCount === 1 ? 'exercise' : 'exercises'}.`
+      : `Starts with the ${exerciseCount} ${exerciseCount === 1 ? 'exercise' : 'exercises'} from ${shortDate(lastSel.date)}, at each one's latest weight.`
 
   async function start() {
     if (await startSession(selected)) nav(selected === 'run' ? '/run' : '/session')
