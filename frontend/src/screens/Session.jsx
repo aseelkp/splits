@@ -253,7 +253,12 @@ function SetScreen() {
       <div className="chips">
         {logged.length === 0 && (
           <span className="muted" style={{ fontSize: '0.9375rem' }}>
-            No sets yet.{ex.lastSets.length ? ` Last time: ${ex.lastSets.length} ${ex.lastSets.length === 1 ? 'set' : 'sets'}.` : ''}
+            No sets yet.
+            {ex.targetSets
+              ? ` Plan: ${ex.targetSets} ${ex.targetSets === 1 ? 'set' : 'sets'}.`
+              : ex.lastSets.length
+                ? ` Last time: ${ex.lastSets.length} ${ex.lastSets.length === 1 ? 'set' : 'sets'}.`
+                : ''}
           </span>
         )}
         {logged.map((s, i) => (

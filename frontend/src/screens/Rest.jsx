@@ -54,8 +54,9 @@ export default function Rest() {
   const current = exercises[active]
   const next = exercises[active + 1]
   const nextRef = next?.lastSets[0]
-  // Last time's number of sets is the plan. While sets remain, the next set is the main action.
-  const moreSets = result.setNo < (current?.lastSets.length ?? 0)
+  // The plan is the routine's target sets, or (if none) last time's number of sets. While sets remain,
+  // the next set is the main action.
+  const moreSets = result.setNo < (current?.targetSets ?? current?.lastSets.length ?? 0)
   const nextSetRef = current?.lastSets[result.setNo]
 
   const endRest = () => patchDraft({ rest: null })

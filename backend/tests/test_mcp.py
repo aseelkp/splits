@@ -21,6 +21,8 @@ TOOLS = {
     "update_set",
     "delete_set",
     "delete_session",
+    "get_routine",
+    "set_routine",
 }
 
 
@@ -172,3 +174,24 @@ def test_failed_log_session_saves_nothing(client):
     ])
     _, recent, _ = call(client, "get_recent_sessions")
     assert recent["sessions"] == []
+
+
+def test_routine_tools_read_and_replace_the_plan(client):
+    log(client, type="upper", sets=[{"exercise": "Bench press", "shorthand": "60x10"}, {"exercise": "Row", "shorthand": "40x10"}])
+
+    is_error, data, text = call(client, "get_routine", type="upper")
+    assert not is_error, text
+    assert data["saved"] is False and [i["exercise"] for i in data["items"]] == ["Bench press", "Row"]  # follows the last session
+
+    is_error, data, text = call(client, "set_routine", type="upper", request={"items": [{"exercise": "Row", "target_sets": 4}, {"exercise": "Curl"}]})
+    assert not is_error, text
+    assert data["saved"] is True
+    assert [(i["exercise"], i["position"], i["target_sets"]) for i in data["items"]] == [("Row", 1, 4), ("Curl", 2, None)]
+
+    is_error, data, _ = call(client, "set_routine", type="upper", request={"items": []})  # empty list = remove it
+    assert not is_error and data["saved"] is False
+
+    is_error, _, text = call(client, "set_routine", type="run", request={"items": [{"exercise": "Row"}]})
+    assert is_error and "no routine" in text
+    is_error, _, text = call(client, "set_routine", type="push", request={"items": [{"exercise": "Row"}, {"exercise": "row"}]})
+    assert is_error and "more than once" in text

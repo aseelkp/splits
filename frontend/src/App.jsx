@@ -7,6 +7,7 @@ import ExercisePage from './screens/ExercisePage'
 import Exercises from './screens/Exercises'
 import Home from './screens/Home'
 import Login from './screens/Login'
+import Routine from './screens/Routine'
 import Run from './screens/Run'
 import Session from './screens/Session'
 import Settings from './screens/Settings'
@@ -95,6 +96,7 @@ function AppInner() {
             <Route path="/session" element={<NeedsDraft><Session /></NeedsDraft>} />
             <Route path="/run" element={<NeedsDraft><Run /></NeedsDraft>} />
             <Route path="/exercises" element={<Exercises />} />
+            <Route path="/routines/:type" element={<Routine />} />
             <Route path="/exercises/:id" element={<ExercisePage />} />
             <Route path="/summary/:id" element={<Summary />} />
             <Route path="/settings" element={<Settings onLogout={() => setAuth('out')} />} />

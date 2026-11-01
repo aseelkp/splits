@@ -102,10 +102,17 @@ so treat it like a password and rotate `MCP_SECRET` (and redeploy) if it leaks.
    lower day?"
 
 Tools it provides: `log_session`, `get_recent_sessions`, `get_last_session`, `get_exercise_history`, `list_exercises`,
-`update_set`, `delete_set`, `delete_session`. Shorthand: `35x10` is one set, `30x2x10` is two sets of 10, `bwx12` is bodyweight.
+`update_set`, `delete_set`, `delete_session`, `get_routine`, `set_routine`. Shorthand: `35x10` is one set, `30x2x10` is two sets of 10, `bwx12` is bodyweight.
 
 To test the endpoint yourself, use the MCP Inspector:
 `npx @modelcontextprotocol/inspector --cli https://<your-domain>/mcp/<MCP_SECRET> --transport http --method tools/list`
+
+## Routines
+
+A routine is the list of exercises a kind of session (push, pull, lower, upper, other) starts with, in order, with an
+optional target number of sets per exercise. Edit them in **Settings > Routines** (or with **Edit routine** on Home, or by
+asking Claude). Until you save one, a session type simply follows its last session. Weights always come from each
+exercise's own latest sets, whichever session they were logged in.
 
 ## Importing past workouts
 

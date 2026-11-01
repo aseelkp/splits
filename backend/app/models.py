@@ -12,6 +12,7 @@ from sqlalchemy import (
     Numeric,
     String,
     Text,
+    UniqueConstraint,
     false,
     func,
 )
@@ -122,3 +123,23 @@ class Run(Base):
     remark: Mapped[str | None] = mapped_column(Text)
 
     session: Mapped[WorkoutSession] = relationship(back_populates="run")
+
+
+class RoutineItem(Base):
+    """One exercise in the routine for a kind of session (push, pull, ...). `position` orders them.
+
+    A kind of session with no rows has no saved routine: it follows its last session instead.
+    `target_sets` null means "the same number as last time".
+    """
+
+    __tablename__ = "routine_items"
+    __table_args__ = (UniqueConstraint("session_type", "exercise_id", name="uq_routine_items_type_exercise"),)
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    session_type: Mapped[SessionType] = mapped_column(_enum(SessionType, "ck_routine_items_session_type"))
+    # Deleting an exercise takes it out of every routine (the database does it, see ondelete).
+    exercise_id: Mapped[int] = mapped_column(ForeignKey("exercises.id", ondelete="CASCADE"), index=True)
+    position: Mapped[int] = mapped_column(Integer)
+    target_sets: Mapped[int | None] = mapped_column(Integer)
+
+    exercise: Mapped[Exercise] = relationship()

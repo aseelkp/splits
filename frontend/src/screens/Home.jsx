@@ -163,6 +163,13 @@ export default function Home() {
               </span>
             </button>
             <p className="hint">{sessions ? hint : 'Loading your history'}</p>
+            {selected !== 'run' && (
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <Link to={`/routines/${selected}`} className="link-btn" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                  Edit {selected} routine
+                </Link>
+              </div>
+            )}
             <ErrorLine>{startError}</ErrorLine>
           </div>
         </>

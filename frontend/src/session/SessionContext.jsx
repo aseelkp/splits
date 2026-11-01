@@ -21,13 +21,13 @@ function buildExercise(name, fallbackUnit, { latest, sameType }) {
   const lastSets = latest?.sets ?? []
   const unit = lastSets.length ? commonUnit(lastSets, fallbackUnit) : fallbackUnit
   const first = lastSets.find((s) => s.unit === unit)
-  return { name, unit, weight: first?.weight ?? 0, reps: 0, warmup: false, plateStack: [], lastSets, lastDate: latest?.date ?? null, lastType: latest?.type ?? null, lastSame: sameType }
+  return { name, unit, weight: first?.weight ?? 0, reps: 0, warmup: false, plateStack: [], lastSets, lastDate: latest?.date ?? null, lastType: latest?.type ?? null, lastSame: sameType, targetSets: null }
 }
 
 /**
- * Which exercises a new session starts with: those of the last session of the same type (a saved,
- * editable routine is planned). Their numbers are only a fallback: startSession replaces them with
- * each exercise's own latest sets.
+ * The exercises of the last session of a type: what a new session starts with when no routine is
+ * saved. Their numbers are only a fallback: startSession replaces them with each exercise's own
+ * latest sets.
  */
 function exercisesFromLast(last) {
   if (!last) return []
@@ -107,17 +107,30 @@ export function SessionProvider({ children }) {
     setError('')
     setBusy(true)
     try {
-      const last = await api.sessions.last(type)
-      // The list comes from the last session of this type; the numbers come from each exercise's own history.
+      // Which exercises: the saved routine for this kind of session if there is one, otherwise the
+      // last session of this type. The numbers always come from each exercise's own history.
+      let plan = null
+      if (type !== 'run') {
+        try {
+          const r = await api.routines.get(type)
+          if (r.saved && r.items.length) plan = r.items
+        } catch {
+          /* no routine available: follow the last session */
+        }
+      }
+      const seed = plan
+        ? plan.map((i) => ({ ...buildExercise(i.exercise, 'kg', { latest: null, sameType: null }), targetSets: i.target_sets }))
+        : exercisesFromLast(await api.sessions.last(type))
       const exercises = await Promise.all(
-        exercisesFromLast(last).map(async (ex) => {
+        seed.map(async (ex) => {
           try {
             const found = await idFor(ex.name)
             if (!found) return ex
             const t = lastTime(await api.exercises.history(found.id, 200), type)
-            return t.latest ? buildExercise(ex.name, ex.unit, t) : ex
+            // No history yet (new to the routine): start in the exercise's own usual unit.
+            return t.latest || plan ? { ...buildExercise(ex.name, found.default_unit ?? ex.unit, t), targetSets: ex.targetSets ?? null } : ex
           } catch {
-            return ex // fall back to the last session's numbers
+            return ex // fall back to what we have
           }
         }),
       )

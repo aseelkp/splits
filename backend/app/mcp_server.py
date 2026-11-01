@@ -25,6 +25,8 @@ from app.schemas import (
     ExerciseOut,
     HistorySet,
     LogResult,
+    RoutineIn,
+    RoutineOut,
     RunIn,
     SessionIn,
     SessionOut,
@@ -32,7 +34,7 @@ from app.schemas import (
     SetOut,
     SetUpdate,
 )
-from app.services import exercises, workouts
+from app.services import exercises, routines, workouts
 from app.services.errors import ServiceError
 
 INSTRUCTIONS = """\
@@ -43,7 +45,9 @@ Workflow: to record a workout call log_session once. Read the result: it lists e
 id, unit and date, and says which exercises were newly created. If something is wrong, fix it with \
 update_set, delete_set or delete_session using the ids from the result, rather than logging again. \
 To compare with history use get_last_session or get_exercise_history. Call list_exercises first if \
-you are unsure of the exact exercise names, so you reuse them instead of creating near-duplicates.\
+you are unsure of the exact exercise names, so you reuse them instead of creating near-duplicates. \
+A routine is the planned exercise list for a kind of session (push, pull, ...): read it with \
+get_routine and change it with set_routine.\
 """
 
 mcp = MCPServer("Splits", instructions=INSTRUCTIONS)
@@ -232,6 +236,49 @@ def delete_session(
     """
     with _db() as db:
         return workouts.delete_session(db, session_id)
+
+
+@mcp.tool(annotations=READ_ONLY)
+def get_routine(
+    type: Annotated[SessionType, Field(description="push, pull, lower, upper or other. Runs have no routine.")],
+) -> RoutineOut:
+    """Get the planned exercise list (the routine) for one kind of session, in order.
+
+    Use when the user asks what is in their push/pull/lower/upper routine, or before changing it
+    so you keep what they did not ask to remove.
+
+    Returns `type`, `saved` and `items` (exercise, position, target_sets). `saved` false means no routine
+    has been saved yet: `items` are then simply the exercises of the last session of that type, and
+    target_sets is null. target_sets null means "plan the same number of sets as last time".
+    """
+    with _db() as db:
+        return routines.get_routine(db, type)
+
+
+@mcp.tool(annotations=ToolAnnotations(destructive_hint=True, idempotent_hint=True))
+def set_routine(
+    type: Annotated[SessionType, Field(description="push, pull, lower, upper or other. Runs have no routine.")],
+    request: Annotated[
+        RoutineIn,
+        Field(
+            description='The WHOLE routine in order, e.g. {"items": [{"exercise": "Bench press", "target_sets": 3}, '
+            '{"exercise": "Row"}]}. target_sets is optional. An empty list removes the saved routine, so that '
+            "kind of session goes back to following its last session."
+        ),
+    ],
+) -> RoutineOut:
+    """Replace the routine for one kind of session: which exercises it starts with, in what order.
+
+    Use when the user wants to add, remove, reorder or re-plan exercises for a kind of session, for
+    example "move incline press from push to upper". It REPLACES the whole list, so call get_routine
+    first and send the full list with your change applied. Unknown exercise names are created; call
+    list_exercises first to reuse existing names. This only changes the plan for future sessions: it
+    never edits logged sets.
+
+    Returns the saved routine (same shape as get_routine). Fails if an exercise is listed twice.
+    """
+    with _db() as db:
+        return routines.set_routine(db, type, request)
 
 
 class McpGateway:

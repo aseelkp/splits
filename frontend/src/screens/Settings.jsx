@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { api } from '../api'
 import Icon from '../components/Icon'
 import { settings } from '../store/settings'
+import { ROUTINE_TYPES } from './Routine'
 
 const THEMES = [
   ['auto', 'Auto'],
@@ -68,6 +69,18 @@ export default function Settings({ onLogout }) {
               <button key={r} type="button" className="pill" aria-pressed={s.restSeconds === r} onClick={() => set({ restSeconds: r })}>
                 {r} s
               </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="setting">
+          <h2>Routines</h2>
+          <p style={{ paddingTop: 0 }}>The exercises each kind of session starts with. Change them any time.</p>
+          <div className="seg" role="group" aria-label="Edit a routine">
+            {ROUTINE_TYPES.map((t) => (
+              <Link key={t} to={`/routines/${t}`} className="pill">
+                {t[0].toUpperCase() + t.slice(1)}
+              </Link>
             ))}
           </div>
         </section>

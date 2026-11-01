@@ -62,6 +62,11 @@ export const api = {
     addSets: (id, sets) => post(`/api/sessions/${id}/sets`, sets),
     setRun: (id, run) => put(`/api/sessions/${id}/run`, run),
   },
+  routines: {
+    list: () => get('/api/routines'),
+    get: (type) => get(`/api/routines/${type}`),
+    set: (type, items) => put(`/api/routines/${type}`, { items }),
+  },
   sets: {
     update: (id, data) => patch(`/api/sets/${id}`, data),
     remove: (id) => del(`/api/sets/${id}`),

@@ -8,7 +8,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from app import auth
 from app.config import get_settings
 from app.mcp_server import McpGateway
-from app.routers import exercises, sessions
+from app.routers import exercises, routines, sessions
 from app.services.errors import ConflictError, InvalidInputError, NotFoundError, ServiceError
 
 settings = get_settings()
@@ -48,6 +48,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(sessions.router)
 app.include_router(exercises.router)
+app.include_router(routines.router)
 
 
 @app.get("/api/health", tags=["meta"])

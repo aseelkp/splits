@@ -140,6 +140,33 @@ class LogResult(BaseModel):
     created_exercises: list[str] = Field(description="Exercises that did not exist and were created.")
 
 
+class RoutineItemIn(BaseModel):
+    exercise: str = Field(description='Exercise name, e.g. "Bench press". Created if it is new.')
+    target_sets: int | None = Field(
+        None, ge=1, le=20, description="How many sets to plan. Leave out to plan the same as last time."
+    )
+
+
+class RoutineIn(BaseModel):
+    items: list[RoutineItemIn] = Field(
+        description="The whole routine, in order. An empty list removes the saved routine, so that kind of "
+        "session goes back to following its last session."
+    )
+
+
+class RoutineItemOut(BaseModel):
+    exercise_id: int
+    exercise: str
+    position: int
+    target_sets: int | None
+
+
+class RoutineOut(BaseModel):
+    type: SessionType
+    saved: bool = Field(description="False means no routine is saved: `items` are just the last session of this type.")
+    items: list[RoutineItemOut]
+
+
 class HistorySet(SetOut):
     date: dt.date
     session_type: SessionType  # push, pull, upper... so callers can tell where the set was done
